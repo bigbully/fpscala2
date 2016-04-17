@@ -160,7 +160,15 @@ object Ex extends App{
       price <- Gen.uniform.map(_ * 10)
     } yield Item(name, price)
 
+    case class Id[A](value:A) extends Monad[Id[A]]{
+      override def unit[A](a: => A): Id[A] = Id(a)
 
+      override def flatMap[A, B](fa: Id[A])(f: (A) => Id[B]): Id[B] = {
+        f(fa.value)
+      }
+
+
+    }
 
   }
 
